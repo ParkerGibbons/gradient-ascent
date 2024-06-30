@@ -11,8 +11,8 @@
 	};
 
 	let canvas: HTMLCanvasElement;
-    let program: WebGLProgram;
-    let gl: WebGLRenderingContext;
+	let program: WebGLProgram;
+	let gl: WebGLRenderingContext;
 
 	const hexToRgb = (hex: string) => {
 		const bigint = parseInt(hex.slice(1), 16);
@@ -237,6 +237,9 @@
 			settings.animationPreset
 		);
 		gl.uniform1i(gl.getUniformLocation(program, 'u_animationPreset'), animationPresetIndex);
+		// Force a re-render
+		gl.clear(gl.COLOR_BUFFER_BIT);
+		gl.drawArrays(gl.TRIANGLES, 0, 6);
 	}
 </script>
 

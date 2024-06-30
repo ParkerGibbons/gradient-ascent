@@ -9,12 +9,17 @@
 		colors: ['#ff0000', '#0000ff'],
 		speed: 1,
 		isAnimated: true,
-		animationPreset: 'wave',
+		animationPreset: 'noise',
 		scale: 1,
 		chaos: 0
 	});
 
 	let activeTab = 'preview';
+
+	// This function is called whenever `settings` should be updated from `ControlPanel`
+	function updateSettings(newSettings) {
+		$settings = { ...newSettings };
+	}
 </script>
 
 <div class="flex h-screen flex-col">
@@ -29,7 +34,7 @@
 					<GradientCanvas settings={$settings} />
 				</div>
 				<div class="w-full p-4 md:w-64">
-					<ControlPanel bind:settings={$settings} />
+					<ControlPanel bind:settings={$settings} on:settingsChange={updateSettings} />
 				</div>
 			</div>
 		</TabsContent>

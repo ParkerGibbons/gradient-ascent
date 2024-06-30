@@ -11,6 +11,7 @@
 		SelectTrigger,
 		SelectValue
 	} from '$lib/components/ui/select';
+	import { createEventDispatcher } from 'svelte';
 
 	export let settings: {
 		colors: string[];
@@ -21,6 +22,8 @@
 		chaos: number;
 	};
 
+	const dispatch = createEventDispatcher();
+
 	let speedValue = [settings.speed];
 	let scaleValue = [settings.scale];
 	let chaosValue = [settings.chaos];
@@ -29,7 +32,15 @@
 	$: settings.scale = scaleValue[0];
 	$: settings.chaos = chaosValue[0];
 
+	// Whenever any property of `settings` changes, reassign `settings` to a new object
+	$: settings = { ...settings, speed: speedValue[0], scale: scaleValue[0], chaos: chaosValue[0] };
+
 	const animationPresets = ['wave', 'spiral', 'noise', 'ripple'];
+
+	function setAnimationPreset(preset: string) {
+		settings.animationPreset = preset;
+		dispatch('settingsChange', settings);
+	}
 
 	function addColor() {
 		if (settings.colors.length < 6) {
@@ -62,6 +73,15 @@
 </script>
 
 <div class="bg-card space-y-4 rounded-lg p-4 shadow">
+	<div class="space-y-2">
+		<Label>Animation Preset</Label>
+		<div class="flex flex-wrap gap-2">
+			{#each animationPresets as preset}
+				<Button on:click={() => setAnimationPreset(preset)}>{preset}</Button>
+			{/each}
+		</div>
+	</div>
+
 	{#each settings.colors as color, i}
 		<div class="space-y-2">
 			<Label for={`color${i + 1}`}>Color {i + 1}</Label>
@@ -94,20 +114,6 @@
 	<div class="flex items-center space-x-2">
 		<Switch id="animated" bind:checked={settings.isAnimated} />
 		<Label for="animated">Animated</Label>
-	</div>
-
-	<div class="space-y-2">
-		<Label for="animationPreset">Animation Preset</Label>
-		<Select bind:value={settings.animationPreset}>
-			<SelectTrigger>
-				<SelectValue placeholder="Select animation preset" />
-			</SelectTrigger>
-			<SelectContent>
-				{#each animationPresets as preset}
-					<SelectItem value={preset}>{preset}</SelectItem>
-				{/each}
-			</SelectContent>
-		</Select>
 	</div>
 
 	<Button on:click={randomizeAll}>Randomize All</Button>
