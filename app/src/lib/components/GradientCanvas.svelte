@@ -243,4 +243,4 @@
 	}
 </script>
 
-<canvas bind:this={canvas} class="h-full w-full" />
+<canvas bind:this={canvas} class="h-full w-full rounded-lg shadow-2xl" />

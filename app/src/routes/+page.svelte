@@ -23,7 +23,7 @@
 </script>
 
 <div class="flex h-screen flex-col">
-	<Tabs value={activeTab} onValueChange={(value) => (activeTab = value)} class="w-full">
+	<Tabs value={activeTab} onValueChange={(value) => (activeTab = value)} class="w-full pt-3 pl-1">
 		<TabsList>
 			<TabsTrigger value="preview">Preview</TabsTrigger>
 			<TabsTrigger value="code">Shader Code</TabsTrigger>
