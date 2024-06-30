@@ -8,7 +8,10 @@
 	const settings = writable({
 		colors: ['#ff0000', '#0000ff'],
 		speed: 1,
-		isAnimated: true
+		isAnimated: true,
+		animationPreset: 'wave',
+		scale: 1,
+		chaos: 0
 	});
 
 	let activeTab = 'preview';

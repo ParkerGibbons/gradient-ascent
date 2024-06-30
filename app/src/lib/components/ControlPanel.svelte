@@ -4,15 +4,32 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Slider } from '$lib/components/ui/slider';
 	import { Switch } from '$lib/components/ui/switch';
+	import {
+		Select,
+		SelectContent,
+		SelectItem,
+		SelectTrigger,
+		SelectValue
+	} from '$lib/components/ui/select';
 
 	export let settings: {
 		colors: string[];
 		speed: number;
 		isAnimated: boolean;
+		animationPreset: string;
+		scale: number;
+		chaos: number;
 	};
 
 	let speedValue = [settings.speed];
+	let scaleValue = [settings.scale];
+	let chaosValue = [settings.chaos];
+
 	$: settings.speed = speedValue[0];
+	$: settings.scale = scaleValue[0];
+	$: settings.chaos = chaosValue[0];
+
+	const animationPresets = ['wave', 'spiral', 'noise', 'ripple'];
 
 	function addColor() {
 		if (settings.colors.length < 6) {
@@ -63,9 +80,35 @@
 		<Label for="speed">Speed: {settings.speed.toFixed(1)}</Label>
 		<Slider id="speed" min={0.1} max={10} step={0.1} bind:value={speedValue} />
 	</div>
+
+	<div class="space-y-2">
+		<Label for="scale">Scale: {settings.scale.toFixed(1)}</Label>
+		<Slider id="scale" min={0.1} max={5} step={0.1} bind:value={scaleValue} />
+	</div>
+
+	<div class="space-y-2">
+		<Label for="chaos">Chaos: {settings.chaos.toFixed(2)}</Label>
+		<Slider id="chaos" min={0} max={1} step={0.01} bind:value={chaosValue} />
+	</div>
+
 	<div class="flex items-center space-x-2">
 		<Switch id="animated" bind:checked={settings.isAnimated} />
 		<Label for="animated">Animated</Label>
 	</div>
+
+	<div class="space-y-2">
+		<Label for="animationPreset">Animation Preset</Label>
+		<Select bind:value={settings.animationPreset}>
+			<SelectTrigger>
+				<SelectValue placeholder="Select animation preset" />
+			</SelectTrigger>
+			<SelectContent>
+				{#each animationPresets as preset}
+					<SelectItem value={preset}>{preset}</SelectItem>
+				{/each}
+			</SelectContent>
+		</Select>
+	</div>
+
 	<Button on:click={randomizeAll}>Randomize All</Button>
 </div>
